@@ -17,7 +17,7 @@ export function MobileSidebar() {
 
   return (
     <>
-      <header className=" absolute h-[calc(100vh-7.6rem)] w-full  left-[-16px]  bg-[#030712] md:hidden">
+      <header className=" absolute h-[calc(100vh)] w-full  left-[-16px]  bg-[#030712] md:hidden">
         <XIcon className="mt-2 ml-auto" onClick={() => switchMobileToggle()} />
         {/* cost portion */}
         <div className="flex justify-evenly text-white font-bold   bg-gradient-to-r  from-[#D750A6] via-[#A057F6] to-[#6E7AFB] items-center w-[150px] rounded-full h-[50px] mx-auto  ">

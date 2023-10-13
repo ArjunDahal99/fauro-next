@@ -13,37 +13,54 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { getHeightnWidth } from "@/components/generate/GetSize";
 import axios, { AxiosResponse } from "axios";
+import Image from "next/image";
+
+import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
+import { LoadingFox } from "@/components/common/Loading";
 const Generate = () => {
   const [textInputPrompt, setTextInputPrompt] = useState("");
   const [textNegativeInputPrompt, setTextNegativeInputPrompt] = useState("");
   const [negativeToggle, setNegativeToggle] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageFromApi, setImageFromApi] = useState();
+
+  //global store
   const toggle = useToggle((state) => state.showToggle);
   const switchMobileToggle = useToggle((state) => state.switchToggle);
   const inputDiamention = useInput((state) => state.inputDiamention);
   const outputNumber = useInput((state) => state.inputOutputNo);
   const Engine = useInput((state) => state.engineModel);
 
-  //getting session
+  // getting session
   const { data: session } = useSession();
   if (!session) return redirect("/login");
-  //generate iamge form the api
 
+  //api call
   const generateImageFromApi = async () => {
-    if (textInputPrompt.length <= 0) return alert("Empty Field");
-    const diamention = getHeightnWidth(inputDiamention);
-    const objdata = {
-      prompt: textInputPrompt,
-      engineModel: Engine,
-      email: session.user?.email,
-      height: diamention?.height,
-      width: diamention?.width,
-    };
+    setIsLoading(true);
 
-    const { data }: any = await axios.post(
-      "http://localhost:8000/api/generate",
-      objdata
-    );
-    console.log(data);
+    try {
+      if (textInputPrompt.length <= 0) return alert("Empty Field");
+      const diamention = getHeightnWidth(inputDiamention);
+      const objdata = {
+        prompt: textInputPrompt,
+        engineModel: Engine,
+        email: session.user?.email,
+        height: diamention?.height,
+        width: diamention?.width,
+      };
+      const { data }: any = await axios.post(
+        // "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
+        "http://localhost:8000/api/generate",
+        objdata
+      );
+
+      setImageFromApi(data.url);
+      //reduce the token from the user
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -54,10 +71,10 @@ const Generate = () => {
           <Sidebar />
         </div>
         {/* left section */}
-        <div className="flex flex-col w-full space-x-4">
+        <div className="flex flex-col w-full space-x-4 ">
           {/* input section */}
 
-          <div className="flex justify-center w-full">
+          <div className="flex justify-center  w-[90%] max-md:w-full ">
             <Input
               type="text"
               className=""
@@ -66,6 +83,7 @@ const Generate = () => {
               placeholder="Enter your prompt..."
             />
             <Button
+              disabled={isLoading}
               onClick={() => generateImageFromApi()}
               className="px-4 rounded-sm bg-gradient-to-bl  from-[#D750A6] via-[#A057F6] to-[#6E7AFB] "
             >
@@ -101,21 +119,22 @@ const Generate = () => {
           </div>
 
           {/* image section */}
-          <div className="flex justify-center mt-8 h-[450px] max-lg:w-[320px]  max-lg:h-[320px] ">
-            <div className="flex flex-col items-center justify-center h-full w-[500px] space-y-5 border-2  border-opacity-40 rounded-sm  border-slate-400 ">
-              <svg
-                className="w-10 h-10 text-gray-200 dark:text-gray-600"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 18"
-              >
-                <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
-              </svg>
-              <h1 className=" text-stone-700">
-                Image generated will be displayed here
-              </h1>
-            </div>
+          <div className="flex items-center justify-center w-[90%] ">
+            {isLoading ? (
+              <LoadingFox />
+            ) : imageFromApi ? (
+              <Image
+                src={imageFromApi}
+                alt="generatedImg"
+                width={500}
+                height={500}
+                className="mt-10 "
+              />
+            ) : (
+              <div className="w-[500px] max-lg:w-[400px] md:mt-6 h-[500px] max-md:h-[500px] flex justify-center">
+                <ImagePlaceHolder />
+              </div>
+            )}
           </div>
 
           {/* end of image section */}

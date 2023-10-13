@@ -13,6 +13,21 @@ interface InputType {
     switchEngine: (s: any) => void
 }
 
+
+
+interface User {
+    id: string;
+    username: string;
+    email: string;
+    about: string | null;
+    pp: string;
+    token: number;
+}
+
+
+
+
+
 export const useToggle = create<ToggleStateType>()((set) => ({
     showToggle: false,
     switchToggle: () => set((state) => ({ showToggle: !state.showToggle })),

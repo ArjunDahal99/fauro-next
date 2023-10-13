@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { AstroImg } from "@/public/images";
 import { signIn, getProviders } from "next-auth/react";
-import { useRouter } from "next/navigation";
+
 import { useEffect } from "react";
 const Login = () => {
   const [provider, setProvider] = useState<Object>();
