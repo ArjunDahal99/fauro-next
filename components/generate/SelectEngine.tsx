@@ -36,7 +36,7 @@ const EngineObject: Engine = {
   engine2: {
     name: "DreamShaper Ai",
     image: DreamShaperImg,
-    api: "pagebrain/dreamshaper-v7:37c0a36ec213848452a7989fa348654cd9cb999df7238e7892488fcbbc4a124d",
+    api: "cjwbw/dreamshaper:ed6d8bee9a278b0d7125872bddfb9dd3fc4c401426ad634d8246a660e387475b",
   },
 };
 

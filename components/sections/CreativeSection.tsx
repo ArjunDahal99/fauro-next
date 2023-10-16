@@ -5,7 +5,16 @@ import React, { useEffect } from "react";
 import { CollectionImg } from "@/public/images";
 import { Button } from "../ui/button";
 import { GoalIcon, PenIcon, SearchIcon } from "lucide-react";
+import { useUserStore } from "@/store/store";
+import { useSession } from "next-auth/react";
+
 const CreativeSection = () => {
+  const getUserDataFromDataBase = useUserStore((state) => state.getUser);
+  const { data: session } = useSession();
+  useEffect(() => {
+    getUserDataFromDataBase(session?.user?.email!);
+  }, []);
+
   return (
     <>
       <section className="flex items-center min-h-screen space-x-2 max-md:flex-col-reverse max-md:flex justify-evenly">
@@ -36,26 +45,3 @@ const CreativeSection = () => {
 };
 
 export default CreativeSection;
-
-{
-  /* <section className="flex">
-<div className="flex justify-center ">
-  <Image
-    className="w-[450px]  h-[520px] sm:w-[320px] sm:h-[400px] rounded-xl "
-    src={CollectionImg}
-    alt="creative"
-  ></Image>
-</div>
-
-<div className="w-1/2 sm:w-full sm:mt-20 ">
-  <h1 className="text-[50px] sm:text-[30px]  md:mt-14 md:text-[35px] text-pop  font-[1000]  ">
-    "Creativity is the brush that paints the canvas of innovation,
-    turning imagination into reality." - ChatGPT
-  </h1>
-  <Link href={"/generate"}>
-    {" "}
-    <Button> Create Now</Button>
-  </Link>
-</div>
-</section> */
-}

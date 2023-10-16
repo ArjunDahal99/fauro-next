@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { create } from 'zustand'
 
 interface ToggleStateType {
@@ -15,14 +16,17 @@ interface InputType {
 
 
 
-interface User {
+interface UserType {
     id: string;
     username: string;
     email: string;
-    about: string | null;
+    about?: string
     pp: string;
     token: number;
+    getUser: (s: string) => void
 }
+
+
 
 
 
@@ -32,6 +36,49 @@ export const useToggle = create<ToggleStateType>()((set) => ({
     showToggle: false,
     switchToggle: () => set((state) => ({ showToggle: !state.showToggle })),
 }))
+
+
+
+export const useUserStore = create<UserType>()((set) => ({
+    id: '',
+    username: '',
+    email: '',
+    pp: '',
+    token: 0,
+
+    getUser: (data) => {
+        try {
+            axios.post('/api/get-user-info', { email: data }).then(res => {
+                console.log(res.data)
+                set(state => ({
+                    id: res.data.user.id,
+                    username: res.data.user.username,
+                    email: res.data.user.email,
+                    pp: res.data.user.pp,
+                    token: res.data.user.token,
+                }))
+            }
+
+            )
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+}))
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const useInput = create<InputType>()((set) => ({
     inputDiamention: '512x512',
     switchInputDiamention: (s) => set((state) => ({ inputDiamention: s })),
@@ -40,4 +87,5 @@ export const useInput = create<InputType>()((set) => ({
     engineModel: "stability-ai/sdxl:1bfb924045802467cf8869d96b231a12e6aa994abfe37e337c63a4e49a8c6c41",
     switchEngine: (s) => set((state) => ({ engineModel: s })),
 }))
+
 

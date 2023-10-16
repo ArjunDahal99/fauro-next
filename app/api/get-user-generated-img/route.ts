@@ -4,12 +4,17 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
 
-    const data = await req.json()
 
-    let user = await prisma.user.findFirst({
+    const { userId } = await req.json()
+
+
+    const data = await prisma.image.findMany({
         where: {
-            email: data.email
+            userId,
         }
     })
-    return NextResponse.json(({ user }))
+
+
+    return NextResponse.json(data)
+
 }

@@ -44,7 +44,10 @@ export function DropdownMenuCheckboxes() {
         <DropdownMenuContent className="w-56 mr-5 cursor-pointer">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuCheckboxItem>Profile</DropdownMenuCheckboxItem>
+          <Link href={"/profile"}>
+            <DropdownMenuCheckboxItem>Profile</DropdownMenuCheckboxItem>{" "}
+          </Link>
+
           <DropdownMenuCheckboxItem>DashBoard</DropdownMenuCheckboxItem>
           <DropdownMenuCheckboxItem>Setting</DropdownMenuCheckboxItem>
           <DropdownMenuSeparator />

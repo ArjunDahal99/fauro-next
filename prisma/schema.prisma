@@ -8,26 +8,28 @@ datasource db {
 }
 
 model User {
-  id       String  @id @unique @default(cuid())
-  username String
-  email    String
-  about    String?
-  pp       String
-  token    Int     @default(100)
-  Image    Image[]
-  Like     Like[]
+  id         String   @id @unique @default(cuid())
+  username   String
+  email      String
+  about      String?
+  pp         String
+  token      Int      @default(100)
+  created_At DateTime @default(now())
+  Image      Image[]
+  Like       Like[]
 }
 
 model Image {
-  id        Int    @id @default(autoincrement())
-  height    Int
-  width     Int
-  prompt    String
-  userId    String
-  LikeCount Int    @default(0)
-  url       String
-  createdBy User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Like      Like[]
+  id         Int      @id @default(autoincrement())
+  height     Int
+  width      Int
+  prompt     String
+  userId     String
+  LikeCount  Int      @default(0)
+  url        String
+  created_At DateTime @default(now())
+  createdBy  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Like       Like[]
 }
 
 model Like {

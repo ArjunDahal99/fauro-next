@@ -9,18 +9,18 @@ import { TokenIcon } from "@/public/icons";
 import { Slider } from "../ui/slider";
 import { useState } from "react";
 import { WarninigIcon } from "./Warning";
-import { useInput } from "@/store/store";
+import { useUserStore } from "@/store/store";
 
 export default function Sidebar() {
   const [guidenceSlider, setGuidenceSlider] = useState<String | any>("3");
-
+  const userToken = useUserStore((state) => state.token);
   return (
     <>
       <header className="w-[320px] max-md:hidden h-[calc(100vh-7.6rem)] border-r-2 border-primary ">
         {/* cost portion */}
         <div className="flex justify-evenly text-white font-bold  bg-gradient-to-r  from-[#D750A6] via-[#A057F6] to-[#6E7AFB] items-center w-[150px] rounded-full h-[50px] mx-auto  ">
           <Image src={TokenIcon} className="w-10 h-10" alt="token" />
-          <h1>180</h1>
+          <h1>{userToken}</h1>
           <Question text={"token will reset after 12 hr"} />
         </div>
         {/* diamention portion */}

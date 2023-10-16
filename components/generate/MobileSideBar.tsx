@@ -8,13 +8,13 @@ import Image from "next/image";
 import { TokenIcon } from "@/public/icons";
 import { useState } from "react";
 import { WarninigIcon } from "./Warning";
-import { useToggle } from "@/store/store";
+import { useToggle, useUserStore } from "@/store/store";
 
 export function MobileSidebar() {
   const switchMobileToggle = useToggle((state) => state.switchToggle);
 
   const [guidenceSlider, setGuidenceSlider] = useState<String | any>("3");
-
+  const userToken = useUserStore((state) => state.token);
   return (
     <>
       <header className=" absolute h-[calc(100vh)] w-full  left-[-16px]  bg-[#030712] md:hidden">
@@ -22,7 +22,7 @@ export function MobileSidebar() {
         {/* cost portion */}
         <div className="flex justify-evenly text-white font-bold   bg-gradient-to-r  from-[#D750A6] via-[#A057F6] to-[#6E7AFB] items-center w-[150px] rounded-full h-[50px] mx-auto  ">
           <Image src={TokenIcon} className="w-10 h-10" alt="token" />
-          <h1>180</h1>
+          <h1>{userToken}</h1>
           <Question text={"token will reset after 12 hr"} />
         </div>
         {/* diamention portion */}

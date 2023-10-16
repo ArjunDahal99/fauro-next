@@ -6,13 +6,13 @@ import Sidebar from "@/components/generate/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useInput, useToggle } from "@/store/store";
+import { useInput, useToggle, useUserStore } from "@/store/store";
 import { FlameIcon, Settings } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { getHeightnWidth } from "@/components/generate/GetSize";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import Image from "next/image";
 
 import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
@@ -30,12 +30,13 @@ const Generate = () => {
   const inputDiamention = useInput((state) => state.inputDiamention);
   const outputNumber = useInput((state) => state.inputOutputNo);
   const Engine = useInput((state) => state.engineModel);
+  const getUserDataFromDataBase = useUserStore((state) => state.getUser);
 
   // getting session
   const { data: session } = useSession();
-  if (!session) return redirect("/login");
+  if (!session) redirect("/");
 
-  //api call
+  //api callz
   const generateImageFromApi = async () => {
     setIsLoading(true);
 
@@ -45,20 +46,21 @@ const Generate = () => {
       const objdata = {
         prompt: textInputPrompt,
         engineModel: Engine,
-        email: session.user?.email,
+        email: session?.user?.email,
         height: diamention?.height,
         width: diamention?.width,
       };
       const { data }: any = await axios.post(
-        // "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
-        "http://localhost:8000/api/generate",
+        "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
+        // "http://localhost:8000/api/generate",
         objdata
       );
 
+      getUserDataFromDataBase(session?.user?.email!);
       setImageFromApi(data.url);
-      //reduce the token from the user
+      //reduce the token from the user ..updating the data after the query
     } catch (error) {
-      console.log(error);
+      alert("Try different model");
     }
     setIsLoading(false);
   };

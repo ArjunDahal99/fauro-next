@@ -10,10 +10,12 @@ const PriceCardComponent = ({ data }: PriceType) => {
         <div className="flex flex-col h-full rounded-lg FeatureList">
           <div className="flex flex-col h-[70%] justify-evenly ">
             {(data?.features).map((feature) => (
-              <h1 key={feature} className="flex justify-evenly">
-                {feature}
-                <CheckCircle2Icon className="ml-2 text-green-400 " />
-              </h1>
+              <>
+                <h1 key={feature} className="flex justify-start ml-3 gap-x-4">
+                  <CheckCircle2Icon className="ml-2 text-green-400 " />
+                  {feature}
+                </h1>
+              </>
             ))}
           </div>
 
