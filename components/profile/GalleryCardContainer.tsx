@@ -1,18 +1,5 @@
-import Image from "next/image";
 import React from "react";
 
-import { DeleteIcon, TrashIcon } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@radix-ui/react-alert-dialog";
-import { Button } from "../ui/button";
-import { AlertDialogFooter, AlertDialogHeader } from "../ui/alert-dialog";
 import { AlertDialogDemo } from "./AlertDelete";
 import { AlertPicture } from "./AlertPicture";
 
@@ -26,6 +13,7 @@ export interface ImageType {
   url: string;
 }
 const GalleryCardContainer = ({ data }: { data: ImageType }) => {
+  console.log(data);
   const widthHeightRatio = data.height / data.width;
   const galleryHeight = Math.ceil(350 * widthHeightRatio);
   const photoSpans = Math.ceil(galleryHeight / 10) + 1;

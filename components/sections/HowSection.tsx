@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 const HowSection = () => {
   return (
     <>
-      <section className="flex justify-center min-h-screen max-md:items-center max:md max-md:flex-col md:flex md:justify-evenly">
+      <section className=" md:mt-10 flex justify-center min-h-screen max-md:items-center max:md max-md:flex-col md:flex md:justify-evenly">
         <div className="">
           <h1 className="text-3xl font-bold text-purple-500 md:text-7xl max-md:text-center">
             How To generate AI Images

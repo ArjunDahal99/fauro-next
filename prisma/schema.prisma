@@ -30,6 +30,7 @@ model Image {
   created_At DateTime @default(now())
   createdBy  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   Like       Like[]
+  isFeatured Boolean @default(true)
 }
 
 model Like {

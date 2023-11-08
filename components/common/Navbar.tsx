@@ -8,7 +8,7 @@ import { DropdownMenuCheckboxes } from "./ProfileBox";
 const Navbar = () => {
   return (
     <>
-      <nav className="flex items-center justify-between w-full ">
+      <nav className="flex items-center justify-between w-full  ">
         <Link href={"/"}>
           <div className="flex items-center">
             <Image src={LogoImg} alt="logo" className="w-20" />

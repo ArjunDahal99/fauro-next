@@ -5,33 +5,31 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { LoadingFox } from "../common/Loading";
 import GalleryCardContainer, { ImageType } from "./GalleryCardContainer";
+import { Award } from "lucide-react";
+import { usegalleyStore } from "@/store/store";
 
 interface GalleryCardContainerProps {
   data: ImageType;
 }
 const UserGallery = () => {
   const { data: session } = useSession();
-  const [allImageData, setAllImageData] = useState([]);
+  const getAllImageData = usegalleyStore((state: any) => state.getImageData);
+  const galleryDataFromStore = usegalleyStore((state: any) => state.data);
 
   useEffect(() => {
-    const getAllUserImage = async () => {
-      const { data } = await axios.post("/api/get-user-generated-img", {
-        email: session?.user.id,
-      });
-      setAllImageData(data);
-    };
-    getAllUserImage();
-  }, []);
-
-  if (!allImageData) return <LoadingFox />;
+    getAllImageData(session?.user.id);
+  }, [session?.user]);
 
   return (
     <>
       <section className="  grid grid-cols-gallery auto-rows-[10px] w-[60%] ">
-        {allImageData &&
-          allImageData.map((photo) => (
+        {galleryDataFromStore ? (
+          galleryDataFromStore.map((photo: any) => (
             <GalleryCardContainer data={photo} key={session?.user?.id} />
-          ))}
+          ))
+        ) : (
+          <LoadingFox />
+        )}
       </section>
     </>
   );

@@ -1,11 +1,17 @@
 import axios from 'axios'
 import { create } from 'zustand'
 
-interface ToggleStateType {
+interface ToggleStateType
+{
     showToggle: boolean
     switchToggle: () => void
 }
-interface InputType {
+
+
+
+
+interface InputType
+{
     inputDiamention: string
     switchInputDiamention: (s: string) => void
     inputOutputNo: string
@@ -16,7 +22,8 @@ interface InputType {
 
 
 
-interface UserType {
+interface UserType
+{
     id: string;
     username: string;
     email: string;
@@ -25,6 +32,20 @@ interface UserType {
     token: number;
     getUser: (s: string) => void
 }
+// interface ImageType {
+//     data?: {
+//         id: number,
+//         height: number,
+//         width: number,
+//         prompt: string,
+//         userId: string,
+//         LikeCount: number,
+//         url: string,
+
+//     }
+
+//     getImage: (s: string) => void
+// }
 
 
 
@@ -34,6 +55,10 @@ interface UserType {
 
 export const useToggle = create<ToggleStateType>()((set) => ({
     showToggle: false,
+    switchToggle: () => set((state) => ({ showToggle: !state.showToggle })),
+}))
+export const usePulbishToggle = create<ToggleStateType>()((set) => ({
+    showToggle: true,
     switchToggle: () => set((state) => ({ showToggle: !state.showToggle })),
 }))
 
@@ -46,9 +71,12 @@ export const useUserStore = create<UserType>()((set) => ({
     pp: '',
     token: 0,
 
-    getUser: (data) => {
-        try {
-            axios.post('/api/get-user-info', { email: data }).then(res => {
+    getUser: (data) =>
+    {
+        try
+        {
+            axios.post('/api/get-user-info', { email: data }).then(res =>
+            {
                 console.log(res.data)
                 set(state => ({
                     id: res.data.user.id,
@@ -60,7 +88,8 @@ export const useUserStore = create<UserType>()((set) => ({
             }
 
             )
-        } catch (error) {
+        } catch (error)
+        {
             console.log(error)
         }
 
@@ -68,9 +97,22 @@ export const useUserStore = create<UserType>()((set) => ({
 }))
 
 
+export const usegalleyStore = create((set) => ({
 
+    data: null,
+    getImageData: async (userId: any) =>
+    {
+        console.log(userId)
+        if (userId)
+        {
+            await axios.post('/api/get-user-generated-img', { userId })
+                .then(res => set((state: any) => ({
+                    data: res.data
+                })))
+        }
 
-
+    }
+}))
 
 
 

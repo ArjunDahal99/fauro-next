@@ -7,7 +7,7 @@ const ReviewCard = ({ data }: any) => {
   return (
     <div
       className="h-[550px]  w-[400px]  max-md:w-[300px] max-md:h-[550px] mb-2 bg-gradient-to-b
-      dark:from-black dark:via-stone-900 dark:to-violet-900 rounded-[20px] shadow-2xl "
+      dark:from-black dark:to-stone-900  rounded-[20px] shadow-2xl "
     >
       <div className="flex flex-col items-center h-full p-10 rounded-lg ">
         <Image

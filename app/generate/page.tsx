@@ -6,7 +6,7 @@ import Sidebar from "@/components/generate/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { useInput, useToggle, useUserStore } from "@/store/store";
+import { useInput, usePulbishToggle, useToggle, useUserStore } from "@/store/store";
 import { FlameIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -17,6 +17,7 @@ import Image from "next/image";
 
 import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
 import { LoadingFox } from "@/components/common/Loading";
+import TogglePublish from "@/components/generate/TogglePublish";
 const Generate = () => {
   const [textInputPrompt, setTextInputPrompt] = useState("");
   const [textNegativeInputPrompt, setTextNegativeInputPrompt] = useState("");
@@ -31,6 +32,7 @@ const Generate = () => {
   const outputNumber = useInput((state) => state.inputOutputNo);
   const Engine = useInput((state) => state.engineModel);
   const getUserDataFromDataBase = useUserStore((state) => state.getUser);
+  const isFeatured = usePulbishToggle((state)=>state.showToggle)
 
   // getting session
   const { data: session } = useSession();
@@ -49,10 +51,11 @@ const Generate = () => {
         email: session?.user?.email,
         height: diamention?.height,
         width: diamention?.width,
+        isFeatured: isFeatured
       };
       const { data }: any = await axios.post(
-        "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
-        // "http://localhost:8000/api/generate",
+        // "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
+        "http://localhost:8000/api/generate",
         objdata
       );
 
@@ -102,6 +105,7 @@ const Generate = () => {
             <h1 className="px-1 text-sm font-bold text-white rounded-full text-purple-60 bg-primary w-fit">
               output:{outputNumber}
             </h1>
+            <TogglePublish/>
           </div>
           {/* next input */}
           <div className="flex items-center mt-3 space-x-3">

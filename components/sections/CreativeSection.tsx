@@ -1,44 +1,50 @@
 "use client";
 
+import { rowOneImages, rowTwoImages } from "@/config/images";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { CollectionImg } from "@/public/images";
-import { Button } from "../ui/button";
-import { GoalIcon, PenIcon, SearchIcon } from "lucide-react";
-import { useUserStore } from "@/store/store";
-import { useSession } from "next-auth/react";
+import MarQuee from 'react-fast-marquee'
 
 const CreativeSection = () => {
-  const getUserDataFromDataBase = useUserStore((state) => state.getUser);
-  const { data: session } = useSession();
-  useEffect(() => {
-    getUserDataFromDataBase(session?.user?.email!);
-  }, []);
+ 
+  
+
 
   return (
     <>
-      <section className="flex items-center min-h-screen space-x-2 max-md:flex-col-reverse max-md:flex justify-evenly">
-        <Image
-          className="w-[520px]  h-[620px] max-md:w-[290px] max-md:h-[320px]  rounded-xl "
-          src={CollectionImg}
-          alt="collection"
-        />
-        <div className=" md:w-1/2">
-          <h1 className=" text-gray-500 font-semibold md:tracking-[-3px] max-md:text-2xl max-sm:w-[300px] md:text-5xl">
-            " Creativity is the brush that paints the canvas of innovation,
-            turning imagination into reality." - ChatGPT
-          </h1>
-          <div className="flex space-x-2 ">
-            <Button className="mt-5  text-black font-bold bg-white shadow-xl hover:bg-gradient-to-r hover:text-white from-[#4158d0] via-[#c850c0] to-[#ffcc70] ">
-              <GoalIcon />
-              <h1 className="ml-2">Start Now</h1>
-            </Button>
-            <Button className="mt-5   text-black font-bold bg-white shadow-xl hover:bg-gradient-to-r hover:text-white from-[#4158d0] via-[#c850c0] to-[#ffcc70]">
-              <SearchIcon />
-              <h1 className="ml-3">Explore Gallery</h1>
-            </Button>
-          </div>
+      <section className="min-h-screen flex flex-col  items-center justify-center p-6">
+      <p className="md:text-[70px] text-[30px]    text-center mt-10  ">
+            Unlease your prompt into <span className="  text-violet-500  font-bold">  Reality</span>
+          </p>
+        <div className=" w-[70%]  rotate-[-4deg] mt-10 md:mt-[6.5rem]">
+          <MarQuee>
+            { rowOneImages.map((i,index)=>(
+              <Image
+              src={i.url}
+              alt='image'
+              key={index}
+              width={500}
+              height={300}
+              className="md:m-4 w-[200px] m-2 md:w-[300px] rounded-[20px]"
+              />
+            ))}
+          </MarQuee>
+          <MarQuee>
+              {rowTwoImages.map((i, index) => (
+                <Image
+                  src={i.url}
+                  key={index}
+                  alt=""
+                  className="md:m-4 w-[200px] m-2 md:w-[450px] rounded-[20px]"
+                  width={500}
+                  height={300}
+                />
+              ))}
+            </MarQuee>
+
         </div>
+
+   
       </section>
     </>
   );
