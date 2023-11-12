@@ -8,16 +8,19 @@ import DashboardCardInfo from "./components/DashboardCardInfo"
 import { DashBoardCardProps } from "@/types"
 import { Separator } from "@/components/ui/separator"
 import { BarChart2Icon, ClipboardSignature, LayoutDashboardIcon } from "lucide-react"
+import NextAuth from "next-auth/next"
 export const dynamic = "force-dynamic";
 const DashBoardPage = async () =>
 {
 
-    const data = await getServerSession()
+    const data = await getServerSession(NextAuth(handler))
+
 
 
     const allUserData = await prisma.image.findMany({
         where: {
             createdBy: {
+                //@ts-ignore
                 email: data?.user.email
             }
         },

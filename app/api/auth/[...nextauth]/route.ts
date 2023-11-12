@@ -7,7 +7,7 @@ import prisma from "@/db/database.config";
 
 
 
-const authOptions = NextAuth({
+export const handler = NextAuth({
     providers: [
         GoogleProvider({
             clientId:
@@ -70,6 +70,6 @@ const authOptions = NextAuth({
         }
     },
 });
-export const handler = NextAuth(authOptions);
 
-export { authOptions as GET, authOptions as POST };
+
+export { handler as GET, handler as POST };
