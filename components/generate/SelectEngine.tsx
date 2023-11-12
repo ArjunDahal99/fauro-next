@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import
+  {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
 import { DreamShaperImg, StabilityImg } from "@/public/images";
 import Image, { StaticImageData } from "next/image";
-import {
-  ArrowBigDownDash,
-  ArrowDown,
-  ArrowDown01Icon,
-  ArrowDownAZ,
-  ArrowDownCircleIcon,
-  ChevronDown,
-} from "lucide-react";
+import
+  {
+    ArrowBigDownDash,
+    ArrowDown,
+    ArrowDown01Icon,
+    ArrowDownAZ,
+    ArrowDownCircleIcon,
+    ChevronDown,
+  } from "lucide-react";
 import { useInput } from "@/store/store";
 
 type Engine = {
@@ -31,7 +33,7 @@ const EngineObject: Engine = {
   engine1: {
     name: "Stability v12",
     image: StabilityImg,
-    api: "stability-ai/sdxl:1bfb924045802467cf8869d96b231a12e6aa994abfe37e337c63a4e49a8c6c41",
+    api: "luosiallen/latent-consistency-model:553803fd018b3cf875a8bc774c99da9b33f36647badfd88a6eec90d61c5f62fc",
   },
   engine2: {
     name: "DreamShaper Ai",
@@ -40,11 +42,13 @@ const EngineObject: Engine = {
   },
 };
 
-export function SelectEngine() {
+export function SelectEngine()
+{
   const [selectedModel, setSelectedModel] = useState<string>("engine1");
   const switchEngine = useInput((state) => state.switchEngine);
 
-  const handleMenuItemClick = (model: string) => {
+  const handleMenuItemClick = (model: string) =>
+  {
     setSelectedModel(model);
     switchEngine(EngineObject[model].api);
   };

@@ -7,12 +7,27 @@ import OutputNo from "./OutputNo";
 import Image from "next/image";
 import { TokenIcon } from "@/public/icons";
 import { Slider } from "../ui/slider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WarninigIcon } from "./Warning";
 import { useUserStore } from "@/store/store";
+import { useSession } from "next-auth/react";
 
-export default function Sidebar() {
+export default function Sidebar()
+{
+
+  const { data: session } = useSession()
+
+  const getUserData = useUserStore((State) => State.getUser)
+  useEffect(() =>
+  {
+    const getUserDataStore = () =>
+    {
+      getUserData(session?.user.email!)
+    }
+    getUserDataStore()
+  }, [])
   const [guidenceSlider, setGuidenceSlider] = useState<String | any>("3");
+
   const userToken = useUserStore((state) => state.token);
   return (
     <>

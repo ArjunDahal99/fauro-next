@@ -1,28 +1,31 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
 import * as React from "react";
-import {
-  DropdownMenuCheckboxItemProps,
-  DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
+import
+  {
+    DropdownMenuCheckboxItemProps,
+    DropdownMenuItem,
+  } from "@radix-ui/react-dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import
+  {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { Cloud, LifeBuoy, LogIn, LogOut } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type Checked = DropdownMenuCheckboxItemProps["checked"];
-export function DropdownMenuCheckboxes() {
+export function DropdownMenuCheckboxes()
+{
   const data = useSession();
   return (
     <DropdownMenu>
@@ -47,8 +50,9 @@ export function DropdownMenuCheckboxes() {
           <Link href={"/profile"}>
             <DropdownMenuCheckboxItem>Profile</DropdownMenuCheckboxItem>{" "}
           </Link>
-
-          <DropdownMenuCheckboxItem>DashBoard</DropdownMenuCheckboxItem>
+          <Link href={"/dashboard"}>
+            <DropdownMenuCheckboxItem>DashBoard</DropdownMenuCheckboxItem>
+          </Link>
           <DropdownMenuCheckboxItem>Setting</DropdownMenuCheckboxItem>
           <DropdownMenuSeparator />
           <DropdownMenuCheckboxItem className="cursor-pointer ">

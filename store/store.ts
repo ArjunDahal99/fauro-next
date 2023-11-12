@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { create } from 'zustand'
-
+import { persist, createJSONStorage } from 'zustand/middleware'
 interface ToggleStateType
 {
     showToggle: boolean
@@ -24,7 +24,7 @@ interface InputType
 
 interface UserType
 {
-    id: string;
+    id: string | null;
     username: string;
     email: string;
     about?: string
@@ -32,23 +32,6 @@ interface UserType
     token: number;
     getUser: (s: string) => void
 }
-// interface ImageType {
-//     data?: {
-//         id: number,
-//         height: number,
-//         width: number,
-//         prompt: string,
-//         userId: string,
-//         LikeCount: number,
-//         url: string,
-
-//     }
-
-//     getImage: (s: string) => void
-// }
-
-
-
 
 
 
@@ -64,37 +47,44 @@ export const usePulbishToggle = create<ToggleStateType>()((set) => ({
 
 
 
-export const useUserStore = create<UserType>()((set) => ({
-    id: '',
-    username: '',
-    email: '',
-    pp: '',
-    token: 0,
-
-    getUser: (data) =>
-    {
-        try
-        {
-            axios.post('/api/get-user-info', { email: data }).then(res =>
+export const useUserStore = create<UserType>()(
+    persist(
+        (set) => ({
+            id: null,
+            username: '',
+            email: '',
+            pp: '',
+            token: 0,
+            getUser: async (data) =>
             {
-                console.log(res.data)
-                set(state => ({
-                    id: res.data.user.id,
-                    username: res.data.user.username,
-                    email: res.data.user.email,
-                    pp: res.data.user.pp,
-                    token: res.data.user.token,
-                }))
+                try
+                {
+                    if (data)
+                    {
+                        await axios.post('/api/get-user-info', { id: data }).then(res =>
+                        {
+                            set(state => ({
+                                id: res.data.user.id,
+                                username: res.data.user.username,
+                                email: res.data.user.email,
+                                pp: res.data.user.pp,
+                                token: res.data.user.token,
+                            }))
+                        }
+                        )
+                    }
+                } catch (error)
+                {
+                    console.log(error)
+                }
             }
-
-            )
-        } catch (error)
+        }),
         {
-            console.log(error)
+            name: 'name',
+            storage: createJSONStorage(() => localStorage),
         }
-
-    }
-}))
+    )
+)
 
 
 export const usegalleyStore = create((set) => ({
@@ -122,11 +112,11 @@ export const usegalleyStore = create((set) => ({
 
 
 export const useInput = create<InputType>()((set) => ({
-    inputDiamention: '512x512',
+    inputDiamention: '768x768',
     switchInputDiamention: (s) => set((state) => ({ inputDiamention: s })),
     inputOutputNo: "1",
     switchOutputNo: (s) => set((state) => ({ inputOutputNo: s })),
-    engineModel: "stability-ai/sdxl:1bfb924045802467cf8869d96b231a12e6aa994abfe37e337c63a4e49a8c6c41",
+    engineModel: "luosiallen/latent-consistency-model:553803fd018b3cf875a8bc774c99da9b33f36647badfd88a6eec90d61c5f62fc",
     switchEngine: (s) => set((state) => ({ engineModel: s })),
 }))
 

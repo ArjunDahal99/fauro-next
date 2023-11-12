@@ -8,15 +8,18 @@ import GalleryCardContainer, { ImageType } from "./GalleryCardContainer";
 import { Award } from "lucide-react";
 import { usegalleyStore } from "@/store/store";
 
-interface GalleryCardContainerProps {
+interface GalleryCardContainerProps
+{
   data: ImageType;
 }
-const UserGallery = () => {
+const UserGallery = () =>
+{
   const { data: session } = useSession();
   const getAllImageData = usegalleyStore((state: any) => state.getImageData);
   const galleryDataFromStore = usegalleyStore((state: any) => state.data);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     getAllImageData(session?.user.id);
   }, [session?.user]);
 
@@ -24,8 +27,8 @@ const UserGallery = () => {
     <>
       <section className="  grid grid-cols-gallery auto-rows-[10px] w-[60%] ">
         {galleryDataFromStore ? (
-          galleryDataFromStore.map((photo: any) => (
-            <GalleryCardContainer data={photo} key={session?.user?.id} />
+          galleryDataFromStore.map((photo: any, index: any) => (
+            <GalleryCardContainer data={photo} key={index} />
           ))
         ) : (
           <LoadingFox />

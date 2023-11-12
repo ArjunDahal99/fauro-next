@@ -5,7 +5,9 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/common/Navbar";
 import Provider from "@/components/common/Provider";
 import { TailwindIndicator } from "@/components/common/tailwindIndicator";
-
+import ModalProvider from "@/provider/previewModalProvider";
+import { Toaster } from "@/components/ui/toaster"
+import PreviewModal from "@/components/browse/PreviewModal";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,11 +19,15 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+})
+{
   return (
     <html lang="en">
       <body className={inter.className + " debug-screens"}>
         <Provider>
+          <PreviewModal />
+          {/* <ModalProvider /> */}
+          <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

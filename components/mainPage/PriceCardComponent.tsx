@@ -2,16 +2,17 @@ import { PriceType } from "@/config/Price";
 import { Button } from "../ui/button";
 import { CheckCircle2Icon } from "lucide-react";
 
-const PriceCardComponent = ({ data }: PriceType) => {
+const PriceCardComponent = ({ data }: PriceType) =>
+{
   return (
     <>
       <div className="h-[550px]  mt-10 w-[400px]  max-sm:w-[300px]  bg-gradient-to-b  dark:from-black dark:via-stone-900 dark:to-violet-900 rounded-lg shadow-2xl ">
         <h1 className="text-3xl font-bold text-center "> {data.title}</h1>
         <div className="flex flex-col h-full rounded-lg FeatureList">
           <div className="flex flex-col h-[70%] justify-evenly ">
-            {(data?.features).map((feature) => (
+            {(data?.features).map((feature, index) => (
               <>
-                <h1 key={feature} className="flex justify-start ml-3 gap-x-4">
+                <h1 key={index} className="flex justify-start ml-3 gap-x-4">
                   <CheckCircle2Icon className="ml-2 text-green-400 " />
                   {feature}
                 </h1>

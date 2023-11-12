@@ -3,17 +3,21 @@ import React from "react";
 import { AlertDialogDemo } from "./AlertDelete";
 import { AlertPicture } from "./AlertPicture";
 
-export interface ImageType {
-  id: number;
-  height: number;
-  width: number;
-  prompt: string;
-  userId: string;
-  LikeCount: number;
-  url: string;
+export interface ImageType
+{
+  data: {
+    id: number;
+    height: number;
+    width: number;
+    prompt: string;
+    userId: string;
+    LikeCount: number;
+    url: string;
+  }
 }
-const GalleryCardContainer = ({ data }: { data: ImageType }) => {
-  console.log(data);
+
+const GalleryCardContainer: React.FC<ImageType> = ({ data }) =>
+{
   const widthHeightRatio = data.height / data.width;
   const galleryHeight = Math.ceil(350 * widthHeightRatio);
   const photoSpans = Math.ceil(galleryHeight / 10) + 1;

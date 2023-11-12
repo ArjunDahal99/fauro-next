@@ -20,17 +20,19 @@ model User {
 }
 
 model Image {
-  id         Int      @id @default(autoincrement())
-  height     Int
-  width      Int
-  prompt     String
-  userId     String
-  LikeCount  Int      @default(0)
-  url        String
-  created_At DateTime @default(now())
-  createdBy  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Like       Like[]
-  isFeatured Boolean @default(true)
+  id              Int               @id @default(autoincrement())
+  height          Int
+  width           Int
+  prompt          String
+  userId          String
+  LikeCount       Int               @default(0)
+  url             String
+  tags            String[]
+  created_At      DateTime          @default(now())
+  isFeatured      Boolean           @default(true)
+  BackgroundColor BackgroundColor[]
+  createdBy       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Like            Like[]
 }
 
 model Like {
@@ -39,4 +41,13 @@ model Like {
   imageId Int
   Image   Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
   User    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model BackgroundColor {
+  id         Int    @id @default(autoincrement())
+  color      String
+  colorCode  String
+  percentage Float
+  imageId    Int
+  Image      Image  @relation(fields: [imageId], references: [id], onDelete: Cascade)
 }

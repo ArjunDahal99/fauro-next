@@ -18,7 +18,8 @@ import Image from "next/image";
 import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
 import { LoadingFox } from "@/components/common/Loading";
 import TogglePublish from "@/components/generate/TogglePublish";
-const Generate = () => {
+const Generate = () =>
+{
   const [textInputPrompt, setTextInputPrompt] = useState("");
   const [textNegativeInputPrompt, setTextNegativeInputPrompt] = useState("");
   const [negativeToggle, setNegativeToggle] = useState(true);
@@ -32,17 +33,20 @@ const Generate = () => {
   const outputNumber = useInput((state) => state.inputOutputNo);
   const Engine = useInput((state) => state.engineModel);
   const getUserDataFromDataBase = useUserStore((state) => state.getUser);
-  const isFeatured = usePulbishToggle((state)=>state.showToggle)
+  const isFeatured = usePulbishToggle((state) => state.showToggle)
 
   // getting session
   const { data: session } = useSession();
+  console.log(session)
   if (!session) redirect("/");
 
   //api callz
-  const generateImageFromApi = async () => {
+  const generateImageFromApi = async () =>
+  {
     setIsLoading(true);
 
-    try {
+    try
+    {
       if (textInputPrompt.length <= 0) return alert("Empty Field");
       const diamention = getHeightnWidth(inputDiamention);
       const objdata = {
@@ -59,10 +63,11 @@ const Generate = () => {
         objdata
       );
 
-      getUserDataFromDataBase(session?.user?.email!);
+      getUserDataFromDataBase(session?.user?.id!);
       setImageFromApi(data.url);
       //reduce the token from the user ..updating the data after the query
-    } catch (error) {
+    } catch (error)
+    {
       alert("Try different model");
     }
     setIsLoading(false);
@@ -105,7 +110,7 @@ const Generate = () => {
             <h1 className="px-1 text-sm font-bold text-white rounded-full text-purple-60 bg-primary w-fit">
               output:{outputNumber}
             </h1>
-            <TogglePublish/>
+            <TogglePublish />
           </div>
           {/* next input */}
           <div className="flex items-center mt-3 space-x-3">
