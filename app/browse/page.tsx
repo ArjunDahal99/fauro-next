@@ -8,9 +8,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 import React from 'react'
 import { format } from 'timeago.js';
 import getFilteredImages from '../../actions/get-image-by-filter'
-import { Button } from '@/components/ui/button'
-import ImageFilter from '@/components/browse/ImageFilter'
-import { useRouter } from 'next/router'
+
 
 
 
@@ -31,12 +29,15 @@ interface BrowserPageProps
 const Browse: React.FC<BrowserPageProps> = async ({ params, searchParams }) =>
 {
 
-    const images = await getFilteredImages({
-        like: searchParams.like,
-        latest: searchParams.latest,
-        color: searchParams.color,
-        tag: searchParams.tag,
-        userId: searchParams.userId
+    const images = await prisma.image.findMany({
+        include: {
+            createdBy: true,
+            BackgroundColor: true,
+            Like: true
+        },
+        orderBy: {
+            created_At: "desc"
+        }
     })
 
     const filteredData: ImagePropsType[] = images.map((image: any) => (
