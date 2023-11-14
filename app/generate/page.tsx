@@ -59,8 +59,8 @@ const Generate = () =>
       };
       const { data }: any = await axios.post(
         // "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
-        // "http://localhost:8000/api/generate",
-        "https://api-production-e05a.up.railway.app/api/generate",
+        "http://localhost:8000/api/generate",
+        // "https://api-production-e05a.up.railway.app/api/generate",
         objdata
       );
 
