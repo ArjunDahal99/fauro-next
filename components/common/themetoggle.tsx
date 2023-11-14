@@ -25,13 +25,12 @@ export function ModeToggle()
   React.useEffect(() =>
   {
     getUserDataFromDataBase(session?.user.id!)
-    console.log(userIdFromCurrentSession.id)
   }, [session])
 
   return (
     <DropdownMenu >
       <DropdownMenuTrigger asChild>
-        <Button className='fixed  bottom-6 right-2' variant="outline" size="icon">
+        <Button className='fixed bottom-24  right-2 z-50' variant="outline" size="icon">
           <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>

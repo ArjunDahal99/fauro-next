@@ -5,17 +5,17 @@ import { useUserStore } from "@/store/store"
 import { getServerSession } from "next-auth"
 import { handler } from "../api/auth/[...nextauth]/route"
 import DashboardCardInfo from "./components/DashboardCardInfo"
-import { DashBoardCardProps } from "@/types"
-import { Separator } from "@/components/ui/separator"
-import { BarChart2Icon, ClipboardSignature, LayoutDashboardIcon } from "lucide-react"
+import { BarChart2Icon } from "lucide-react"
 import NextAuth from "next-auth/next"
-export const dynamic = "force-dynamic";
+import { DataTable } from "./table/data-table"
+import { ImageTable, columns } from "./table/columns"
+import ColorRadialBarChart from "./components/ColorRadialBarChart"
+
+
+
 const DashBoardPage = async () =>
 {
-
     const data = await getServerSession(NextAuth(handler))
-
-
 
     const allUserData = await prisma.image.findMany({
         where: {
@@ -31,6 +31,19 @@ const DashBoardPage = async () =>
         }
     },)
 
+
+    const filteredDataForTable: ImageTable[] = allUserData.map((d) => ({
+        id: d.id,
+        color: d.BackgroundColor.map((i) => i.colorCode),
+        prompt: d.prompt,
+        like: d.Like.length,
+        created_time: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(d.created_At))
+    }))
+
+
+    //data for colors
+
+
     return (
         <div>
             <div className=" mb-20 flex justify-start md:pl-[150px] max-md:justify-center gap-x-4 items-center ">
@@ -38,6 +51,11 @@ const DashBoardPage = async () =>
                 <BarChart2Icon className=" w-6 h-6 md:w-16 md:h-16" />
             </div>
             <DashboardCardInfo data={allUserData} />
+
+            <div className=" md:px-6 px-2 justify-center">
+                <DataTable columns={columns} data={filteredDataForTable} />
+            </div>
+
         </div>
     )
 

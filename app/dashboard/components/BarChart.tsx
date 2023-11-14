@@ -57,7 +57,7 @@ const LikeBarChart = () =>
         <div>
 
             <BarChart
-                width={400}
+                width={350}
                 height={170}
                 data={data}
                 margin={{

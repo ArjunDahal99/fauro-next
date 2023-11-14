@@ -1,10 +1,12 @@
+
 //@ts-nocheck
 "use client"
 import React, { useEffect, useState } from 'react'
-import { CartesianGrid, Legend, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-const TodayAPICall = ({ data }: any) =>
+const ContainerForAreaChart = ({ data }: any) =>
 {
+    console.log(data)
     const [isMounted, setIsMounted] = useState(false)
     useEffect(() =>
     {
@@ -15,7 +17,6 @@ const TodayAPICall = ({ data }: any) =>
     {
         return null
     }
-
 
     function convertTo12HourFormat(hour)
     {
@@ -40,7 +41,6 @@ const TodayAPICall = ({ data }: any) =>
         }
     }
 
-
     const CustomTooltip = ({ active, payload, label }) =>
     {
         if (active && payload && payload.length)
@@ -48,9 +48,8 @@ const TodayAPICall = ({ data }: any) =>
 
             return (
                 <div className="custom-tooltip">
-                    <p className="label text-md">{payload[0].payload.apiCall > 1 ? `${payload[0].payload.apiCall} Calls` : `${payload[0].payload.apiCall}Call`} </p>
-                    <p className=' text-md'>{convertTo12HourFormat(payload[0].payload.hour)}</p>
-
+                    <p className="label text-sm">{payload[0].payload.apiCall > 1 ? `${payload[0].payload.apiCall} Calls` : `${payload[0].payload.apiCall}Call`} </p>
+                    <p className=' text-sm'>{convertTo12HourFormat(payload[0].payload.hour)}</p>
                 </div>
             );
         }
@@ -59,28 +58,28 @@ const TodayAPICall = ({ data }: any) =>
     };
 
 
+
+
     return (
-        <ResponsiveContainer minWidth={screen} height={400}>
-            <ScatterChart
-                width={1200}
-                height={500}
+        <ResponsiveContainer width="90%" height="100%">
+            <AreaChart
+                width={300}
+                height={350}
+                data={data}
                 margin={{
-                    top: 20,
-                    right: 20,
-                    bottom: 10,
-                    left: 10,
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
                 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="hour" type="number" name="Time" unit={"hr"} />
-                <YAxis dataKey="apiCall" type="number" name="No of api call" />
                 <Tooltip content={<CustomTooltip />} cursor={{ strokeDasharray: '3 3' }} />
-                <Legend />
-                <Scatter name='Api Call' data={data} fill="#8884d8" />
-            </ScatterChart>
+                <Area type="monotone" dataKey="apiCall" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
+            </AreaChart>
         </ResponsiveContainer>
-
     )
 }
 
-export default TodayAPICall
+export default ContainerForAreaChart
+

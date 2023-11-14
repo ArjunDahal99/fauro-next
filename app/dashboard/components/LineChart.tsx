@@ -16,29 +16,7 @@ const APILineChart = (LineChartdata: any) =>
     {
         return null
     }
-
-    function mapNumberToDay(label)
-    {
-        switch (label)
-        {
-            case 0:
-                return "Saturday";
-            case 1:
-                return "Sunday";
-            case 2:
-                return "Monday";
-            case 3:
-                return "Tuesday";
-            case 4:
-                return "Wednesday";
-            case 5:
-                return "Thursday";
-            case 6:
-                return "Friday";
-            default:
-                return "Invalid number";
-        }
-    }
+    const tooltipData = LineChartdata.data.map((d) => d.name)
     const CustomTooltip = ({ active, payload, label }) =>
     {
 
@@ -46,8 +24,8 @@ const APILineChart = (LineChartdata: any) =>
         {
             return (
                 <div className="custom-tooltip">
-                    <p className='text-[16px]'>{payload[0].value}</p>
-                    <p className="intro text-sm">{mapNumberToDay(label)}</p>
+                    <p className='text-[16px]'>{payload[0].value} call</p>
+                    <p className="intro text-sm">{tooltipData[label]}</p>
                 </div>
             );
         }
@@ -55,17 +33,17 @@ const APILineChart = (LineChartdata: any) =>
         return null;
     };
     return (
-        <div>
+        <div className=''>
 
             <LineChart
                 width={380}
-                height={190}
+                height={180}
                 data={LineChartdata.data}
                 margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
-                    bottom: 0
+                    top: 14,
+                    right: 10,
+                    left: 4,
+                    bottom: 4
                 }}
             >
                 <Tooltip content={<CustomTooltip />} contentStyle={{ backgroundColor: "transparent" }} viewBox={{ x: 0, y: 0, width: 10, height: 10 }} />

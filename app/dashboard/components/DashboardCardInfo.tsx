@@ -1,11 +1,13 @@
-import { DashBoardCardProps } from '@/types'
-import React from 'react'
+
 import TokenPieChart from './PieChart'
 import CardContainer from './CardContainer'
-import { BananaIcon, HeartIcon, ZapIcon } from 'lucide-react'
+import { ActivityIcon, BananaIcon, GaugeCircleIcon, HeartIcon, PaletteIcon, ZapIcon } from 'lucide-react'
 import APILineChart from './LineChart'
 import LikeBarChart from './BarChart'
 import TodayAPICall from './TodayAPICall'
+import TodayAPICallAreaChart from './AreaChart'
+import ContainerForAreaChart from './AreaChart'
+import ColorRadialBarChart from './ColorRadialBarChart'
 
 
 
@@ -25,46 +27,74 @@ const DashboardCardInfo = ({ data }: { data: any }) =>
     }
     // for the API call data
     const totalApiCall = data.length
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const LineChartdata = daysOfWeek.map(day =>
+    const currentDate = new Date();
+    const lastSevenDays = new Array(7).fill(0).map((_, index) =>
     {
-        const apiCall = data.reduce((count: any, image: any) =>
-        {
-            const imageDay = image.created_At.toLocaleDateString('en-US', { weekday: 'long' });
-            return count + (day === imageDay ? 1 : 0);
-        }, 0);
-
-        return { name: day, apiCall };
+        const day = new Date(currentDate);
+        day.setDate(currentDate.getDate() - index);
+        return day;
     });
 
-    //FOR API CALL FOR ONE DAY
-    const currentDate = new Date();
+    // Reverse the lastSevenDays array
+    lastSevenDays.reverse();
 
-    // Initialize an array with hours of the day (0-23)
-    const hoursOfDay = Array.from({ length: 24 }, (_, index) => index);
-
-    const TodayAPICallData = hoursOfDay.map(hour =>
+    const LineChartdata = lastSevenDays.map(day =>
     {
+        const formattedDay = day.toLocaleDateString('en-US', { weekday: 'long' });
         const apiCall = data.reduce((count: any, image: any) =>
         {
-            const imageHour = image.created_At.getHours();
-            return count + (hour === imageHour ? 1 : null);
-        }, null);
+            const imageDay = new Date(image.created_At).toLocaleDateString('en-US', { weekday: 'long' });
+            return count + (formattedDay === imageDay ? 1 : 0);
+        }, 0);
 
+        return { name: formattedDay, apiCall };
+    });
+
+    console.log(LineChartdata)
+
+    //FOR API CALL FOR ONE DAY
+
+
+    const hoursOfDay = Array.from({ length: 24 }, (_, index) => index);
+    const currentDay = currentDate.getDate();
+    const TodayAPICallData = hoursOfDay.map(hour =>
+    {
+        const imageHour = new Date(currentDate);
+        imageHour.setHours(hour);
+        const filteredData = data.filter((image: any) =>
+        {
+            return (
+                image.created_At.getHours() === imageHour.getHours() &&
+                image.created_At.getDate() === currentDay
+            );
+        });
+        const apiCall = filteredData.length;
         return { hour, apiCall: apiCall > 0 ? apiCall : null };
     });
 
+    const todayapicalllength = (TodayAPICallData.filter((e) => e.apiCall !== null).length === 0) ? 0 : TodayAPICallData.filter((e) => e.apiCall !== null).length
 
 
     return (
         <>
-            <div className=" flex justify-evenly flex-wrap gap-4">
-                <TokenPieChart data={token} />
+            <div className=" flex justify-evenly flex-wrap">
+
                 <CardContainer children={<APILineChart data={LineChartdata} />} title='Api Request' icon={<BananaIcon />} value={totalApiCall} />
                 <CardContainer children={<LikeBarChart />} title='Likes' icon={<HeartIcon />} value={totalLike} />
+                <CardContainer children={<ContainerForAreaChart data={TodayAPICallData} />} title='Today API Usages' icon={<ActivityIcon />} value={todayapicalllength} />
+                <CardContainer children={<TokenPieChart data={token} />} title='Token Left' icon={<GaugeCircleIcon />} />
             </div>
-            <div className="  h-screen w-full flex justify-center flex-col items-center  ">
-                <h1 className=' text-2xl font-bold'>Todays Api Call</h1>
+            <div className=" w-full h-full flex md:mt-20 mt-5  items-center flex-col justify-center">
+                <div className=' text-2xl flex items-center justify-center space-x-2 '>
+                    <h1 className=' font-bold'>
+                        Color Graph
+                    </h1>
+                    <PaletteIcon />
+                </div>
+                <ColorRadialBarChart data={data} />
+            </div>
+            <div className="  h-fit mt-10 w-full flex justify-center flex-col items-center  ">
+                <h1 className=' text-2xl font-bold'>24 hr Api Call</h1>
                 <TodayAPICall data={TodayAPICallData} />
             </div>
 

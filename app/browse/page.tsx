@@ -4,29 +4,15 @@ import { Separator } from '@/components/ui/separator'
 import prisma from '@/db/database.config'
 import { ImagePropsType } from '@/types'
 import { CompassIcon } from 'lucide-react'
-import { revalidatePath, revalidateTag } from 'next/cache'
 import React from 'react'
 import { format } from 'timeago.js';
-import getFilteredImages from '../../actions/get-image-by-filter'
 
 
 
 
-interface BrowserPageProps
-{
-    params: {
 
-    },
-    searchParams: {
-        color?: string
-        tag?: string
-        like?: boolean
-        latest?: boolean
-        userId?: string
-    };
-}
 
-const Browse: React.FC<BrowserPageProps> = async ({ params, searchParams }) =>
+const Browse = async () =>
 {
 
     const images = await prisma.image.findMany({
@@ -69,8 +55,6 @@ const Browse: React.FC<BrowserPageProps> = async ({ params, searchParams }) =>
                 <CompassIcon className=' w-16 h-16 md:w-24 md:h-24 lg:w-30 lg:h-30  ' />
             </div>
             <Separator className=' my-2' />
-
-
             <BrowseGallery data={filteredData} />
         </div>
     )
