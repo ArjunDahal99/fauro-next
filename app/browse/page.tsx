@@ -12,6 +12,9 @@ import { format } from 'timeago.js';
 const Browse = async () =>
 {
     const images = await prisma.image.findMany({
+        where: {
+            isFeatured: true,
+        },
         include: {
             Like: true,
             BackgroundColor: true,
