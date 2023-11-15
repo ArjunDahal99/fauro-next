@@ -37,7 +37,6 @@ const Generate = () =>
 
   // getting session
   const { data: session } = useSession();
-  console.log(session)
   if (!session) redirect("/");
 
   //api callz
@@ -59,7 +58,8 @@ const Generate = () =>
       };
       const { data }: any = await axios.post(
         // "https://wide-eyed-lime-overshirt.cyclic.app/api/generate",
-        "http://localhost:8000/api/generate",
+        // "http://localhost:8000/api/generate",
+        "https://fauro.onrender.com/api/generate",
         // "https://api-production-e05a.up.railway.app/api/generate",
         objdata
       );

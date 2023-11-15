@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 "use client"
 import React, { useEffect, useState } from 'react'
 import
@@ -6,9 +6,11 @@ import
     BarChart,
     Bar,
     ResponsiveContainer,
+    Tooltip,
+    XAxis,
 } from "recharts";
 
-const LikeBarChart = () =>
+const LikeBarChart = ({ data }: { data: any }) =>
 {
     const [isMounted, setIsMounted] = useState(false)
     useEffect(() =>
@@ -21,56 +23,31 @@ const LikeBarChart = () =>
         return null
     }
 
-    const data = [
+    const tooltipData = data.map((d) => d.name)
+    const CustomTooltip = ({ active, payload, label }) =>
+    {
+        if (active && payload && payload.length)
         {
-            name: "Page A",
-            uv: 4000,
-        },
-        {
-            name: "Page B",
-            uv: 3000,
-        },
-        {
-            name: "Page C",
-            uv: 2000,
-
-        },
-        {
-            name: "Page D",
-            uv: 2780,
-        },
-        {
-            name: "Page E",
-            uv: 1890,
-        },
-        {
-            name: "Page F",
-            uv: 2390,
-        },
-        {
-            name: "Page G",
-            uv: 3490,
+            return (
+                <div className="custom-tooltip">
+                    <p className='text-[16px]'>{payload[0].value} Likes</p>
+                    <p className="intro text-sm">{tooltipData[label]}</p>
+                </div>
+            );
         }
-    ];
 
+        return null;
+    };
     return (
-        <div>
-
-            <BarChart
-                width={350}
-                height={170}
-                data={data}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
-                }}
-            >
-                <Bar dataKey="uv" fill="#8884d8" />
-            </BarChart>
-
-        </div >
+        <div className=" w-full h-full mt-20">
+            <ResponsiveContainer width="99%" height="100%">
+                <BarChart width={250} height={40} data={data}>
+                    <Bar dataKey="apiCall" fill="#8884d8" />
+                    <Tooltip content={<CustomTooltip />} contentStyle={{ backgroundColor: "transparent" }} viewBox={{ x: 0, y: 0, width: 10, height: 10 }} />
+                    <XAxis style={{ fontSize: "12px" }} />
+                </BarChart>
+            </ResponsiveContainer>
+        </div>
     );
 
 }

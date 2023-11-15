@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import TokenPieChart from './PieChart'
 import CardContainer from './CardContainer'
 import { ActivityIcon, BananaIcon, GaugeCircleIcon, HeartIcon, PaletteIcon, ZapIcon } from 'lucide-react'
@@ -16,6 +16,55 @@ import ColorRadialBarChart from './ColorRadialBarChart'
 const DashboardCardInfo = ({ data }: { data: any }) =>
 {
 
+    console.log(data)
+    // get like of last seven days
+
+    let currentDate = new Date();
+    let lastSevenDays = new Array(7).fill(0).map((_, index) =>
+    {
+        const day = new Date(currentDate);
+        day.setDate(currentDate.getDate() - index);
+        return day;
+    });
+
+    lastSevenDays.reverse()
+
+    const LikeArray = data.flatMap(image => image.Like || []);
+    console.log(LikeArray)
+
+
+    const finalLikeData = lastSevenDays.map((day) =>
+    {
+        const formattedDay = day.toLocaleDateString('en-US', { weekday: 'long' })
+        const apiCall = LikeArray.reduce((count, like) =>
+        {
+            const imageDay = new Date(like.created_At).toLocaleDateString('en-US', { weekday: 'long' });
+            return count + (formattedDay === imageDay ? 1 : 0);
+        }, 0);
+        return { name: formattedDay, apiCall };
+    })
+
+    console.log(finalLikeData)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //for total likes
     const totalLike = data.reduce((sum: number, image: any) => sum + image.Like.length, 0)
     let token;
     if (!data[0]?.createdBy.token)
@@ -27,8 +76,7 @@ const DashboardCardInfo = ({ data }: { data: any }) =>
     }
     // for the API call data
     const totalApiCall = data.length
-    const currentDate = new Date();
-    const lastSevenDays = new Array(7).fill(0).map((_, index) =>
+    lastSevenDays = new Array(7).fill(0).map((_, index) =>
     {
         const day = new Date(currentDate);
         day.setDate(currentDate.getDate() - index);
@@ -80,7 +128,7 @@ const DashboardCardInfo = ({ data }: { data: any }) =>
             <div className=" flex justify-evenly flex-wrap">
 
                 <CardContainer children={<APILineChart data={LineChartdata} />} title='Api Request' icon={<BananaIcon />} value={totalApiCall} />
-                <CardContainer children={<LikeBarChart />} title='Likes' icon={<HeartIcon />} value={totalLike} />
+                <CardContainer children={<LikeBarChart data={finalLikeData} />} title='Likes' icon={<HeartIcon />} value={totalLike} />
                 <CardContainer children={<ContainerForAreaChart data={TodayAPICallData} />} title='Today API Usages' icon={<ActivityIcon />} value={todayapicalllength} />
                 <CardContainer children={<TokenPieChart data={token} />} title='Token Left' icon={<GaugeCircleIcon />} />
             </div>
