@@ -18,9 +18,9 @@ import Image from "next/image";
 import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
 import { LoadingFox } from "@/components/common/Loading";
 import TogglePublish from "@/components/generate/TogglePublish";
-const userToken = useUserStore((state) => state.token);
 const Generate = () =>
 {
+  const userToken = useUserStore((state) => state.token);
   const [textInputPrompt, setTextInputPrompt] = useState("");
   const [textNegativeInputPrompt, setTextNegativeInputPrompt] = useState("");
   const [negativeToggle, setNegativeToggle] = useState(true);
