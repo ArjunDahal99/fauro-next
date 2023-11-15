@@ -18,6 +18,7 @@ import Image from "next/image";
 import ImagePlaceHolder from "@/components/generate/ImagePlaceHolder";
 import { LoadingFox } from "@/components/common/Loading";
 import TogglePublish from "@/components/generate/TogglePublish";
+const userToken = useUserStore((state) => state.token);
 const Generate = () =>
 {
   const [textInputPrompt, setTextInputPrompt] = useState("");
@@ -46,6 +47,10 @@ const Generate = () =>
 
     try
     {
+      if (userToken <= 0)
+      {
+        return alert("Out of Token")
+      }
       if (textInputPrompt.length <= 0) return alert("Empty Field");
       const diamention = getHeightnWidth(inputDiamention);
       const objdata = {
