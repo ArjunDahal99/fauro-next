@@ -6,13 +6,11 @@ import { ImagePropsType } from '@/types'
 import { CompassIcon } from 'lucide-react'
 import React from 'react'
 import { format } from 'timeago.js';
+import { cache } from 'react'
 
+export const revalidate = 10;
 
-
-
-
-
-const Browse = async () =>
+const Browse = cache(async () =>
 {
 
     const images = await prisma.image.findMany({
@@ -58,6 +56,6 @@ const Browse = async () =>
             <BrowseGallery data={filteredData} />
         </div>
     )
-}
+})
 
 export default Browse
