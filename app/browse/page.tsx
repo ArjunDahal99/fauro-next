@@ -3,19 +3,19 @@ import BrowseGallery from '@/components/browse/BrowseGallery'
 import { Separator } from '@/components/ui/separator'
 import prisma from '@/db/database.config'
 import { ImagePropsType } from '@/types'
+import axios from 'axios'
 import { CompassIcon } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { format } from 'timeago.js';
 
 
-const Browse = (async () =>
+const Browse = async () =>
 {
-
     const images = await prisma.image.findMany({
         include: {
-            createdBy: true,
+            Like: true,
             BackgroundColor: true,
-            Like: true
+            createdBy: true
         },
         orderBy: {
             created_At: "desc"
@@ -23,6 +23,7 @@ const Browse = (async () =>
     })
 
     const filteredData: ImagePropsType[] = images.map((image: any) => (
+        console.log(image),
         {
             imageId: image.id,
             height: image.height,
@@ -54,6 +55,6 @@ const Browse = (async () =>
             <BrowseGallery data={filteredData} />
         </div>
     )
-})
+}
 
 export default Browse
