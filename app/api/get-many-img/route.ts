@@ -5,6 +5,9 @@ import { NextResponse } from "next/server"
 export const GET = async () =>
 {
     const images = await prisma.image.findMany({
+        where: {
+            isFeatured: true
+        },
         include: {
             createdBy: true,
             BackgroundColor: true,
