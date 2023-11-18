@@ -1,4 +1,5 @@
 
+import { getAllImage } from '@/actions/get-all-image'
 import BrowseGallery from '@/components/browse/BrowseGallery'
 import { Separator } from '@/components/ui/separator'
 import prisma from '@/db/database.config'
@@ -11,20 +12,8 @@ import { format } from 'timeago.js';
 
 const Browse = async () =>
 {
-    const images = await prisma.image.findMany({
-        where: {
-            isFeatured: true,
-        },
-        include: {
-            Like: true,
-            BackgroundColor: true,
-            createdBy: true
-        },
-        orderBy: {
-            created_At: "desc"
-        }
-    })
-
+    const images = await getAllImage()
+    //@ts-ignore
     const filteredData: ImagePropsType[] = images.map((image: any) => (
         console.log(image),
         {

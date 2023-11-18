@@ -1,15 +1,17 @@
-import {
+import
+{
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export function AccordionDemo() {
+export function AccordionDemo()
+{
   return (
     <section className="">
       <h1 className="text-4xl font-bold text-center"> Question & Answer</h1>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex  md:mt-40 mt-10 justify-center min-h-screen">
         <Accordion type="single" collapsible className="w-1/2">
           <AccordionItem value="item-1">
             <AccordionTrigger>
