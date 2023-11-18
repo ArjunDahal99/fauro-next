@@ -1,7 +1,7 @@
 import prisma from '@/db/database.config'
 import { cache } from 'react'
 
-export const revalidate = 60 // revalidate the data at most every hour
+export const revalidate = 1 // revalidate the data at most every hour
 
 export const getAllImage = cache(async () =>
 {
